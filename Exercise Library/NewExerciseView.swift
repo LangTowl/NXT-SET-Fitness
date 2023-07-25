@@ -123,7 +123,7 @@ struct NewExerciseView: View {
             }
             .navigationTitle("New Exercise")
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         switch type {
                         case "cardio":

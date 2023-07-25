@@ -7,4 +7,4 @@
 
 import Foundation
 
-let primary_muscles: [String] = ["chest", "back", "shoulder", "tricep", "bicep", "forearn", "core", "quad", "hamstring", "glute", "calve", "other"]
+let primary_muscles: [String] = ["chest", "back", "shoulder", "tricep", "bicep", "forearm", "core", "quad", "hamstring", "glute", "calve", "other"]

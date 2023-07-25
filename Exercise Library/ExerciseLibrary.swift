@@ -27,11 +27,11 @@ struct ExerciseLibrary: View {
             ScrollView {
                 switch active_view {
                 case "strength":
-                    Text("strength")
+                    StrengthExercisesView()
                 case "cardio":
-                    Text("cardio")
+                    CardioExercisesView()
                 default:
-                    Text("Please select desired filter")
+                    Text("Please select desired filter.")
                 }
             }
             .navigationTitle("Exercise Library")
