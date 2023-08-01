@@ -19,3 +19,8 @@ let exercise_inspector_graph_height: Double = (UIScreen.main.bounds.width / 1.75
 let exercise_inspector_bubble_width: Double = (UIScreen.main.bounds.width / 2.75)
 
 let exercise_inspector_bubble_height: Double = (UIScreen.main.bounds.width / 4)
+
+func compute_graph_height(value: Double) -> Double {
+    let temp: Double = value * 0.1 * 5
+    return temp
+}

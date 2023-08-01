@@ -60,6 +60,7 @@ struct CardioExercisesView: View {
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Walking")
@@ -77,6 +78,7 @@ struct CardioExercisesView: View {
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Swimming")
@@ -94,6 +96,7 @@ struct CardioExercisesView: View {
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Cycling")
@@ -111,6 +114,7 @@ struct CardioExercisesView: View {
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Stairs")
@@ -128,6 +132,7 @@ struct CardioExercisesView: View {
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Other")
@@ -145,6 +150,7 @@ struct CardioExercisesView: View {
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
             }
             .padding(.horizontal)
         }

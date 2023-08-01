@@ -80,6 +80,7 @@ struct StrengthExercisesView: View {
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Back")
@@ -91,12 +92,13 @@ struct StrengthExercisesView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: exercise_card_spacing) {
                         ForEach(back_exercises) {
-                            Text($0.name)
+                            ExerciseCardView(exercise: $0)
                         }
                         
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Shoulders")
@@ -108,12 +110,13 @@ struct StrengthExercisesView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: exercise_card_spacing) {
                         ForEach(shoulder_exercises) {
-                            Text($0.name)
+                            ExerciseCardView(exercise: $0)
                         }
                         
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Tricep")
@@ -125,12 +128,13 @@ struct StrengthExercisesView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: exercise_card_spacing) {
                         ForEach(tricep_exercises) {
-                            Text($0.name)
+                            ExerciseCardView(exercise: $0)
                         }
                         
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Bicep")
@@ -142,12 +146,13 @@ struct StrengthExercisesView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: exercise_card_spacing) {
                         ForEach(bicep_exercises) {
-                            Text($0.name)
+                            ExerciseCardView(exercise: $0)
                         }
                         
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Forearm")
@@ -159,12 +164,13 @@ struct StrengthExercisesView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: exercise_card_spacing) {
                         ForEach(forearm_exercises) {
-                            Text($0.name)
+                            ExerciseCardView(exercise: $0)
                         }
                         
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Core")
@@ -176,12 +182,13 @@ struct StrengthExercisesView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: exercise_card_spacing) {
                         ForEach(core_exercises) {
-                            Text($0.name)
+                            ExerciseCardView(exercise: $0)
                         }
                         
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Quad")
@@ -193,12 +200,13 @@ struct StrengthExercisesView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: exercise_card_spacing) {
                         ForEach(quad_exercises) {
-                            Text($0.name)
+                            ExerciseCardView(exercise: $0)
                         }
                         
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Hamstring")
@@ -210,12 +218,13 @@ struct StrengthExercisesView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: exercise_card_spacing) {
                         ForEach(hamstring_exercises) {
-                            Text($0.name)
+                            ExerciseCardView(exercise: $0)
                         }
                         
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Glute")
@@ -227,12 +236,13 @@ struct StrengthExercisesView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: exercise_card_spacing) {
                         ForEach(glute_exercises) {
-                            Text($0.name)
+                            ExerciseCardView(exercise: $0)
                         }
                         
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Calve")
@@ -244,12 +254,13 @@ struct StrengthExercisesView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: exercise_card_spacing) {
                         ForEach(calve_exercises) {
-                            Text($0.name)
+                            ExerciseCardView(exercise: $0)
                         }
                         
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
                 
                 HStack {
                     Text("Other")
@@ -261,12 +272,13 @@ struct StrengthExercisesView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: exercise_card_spacing) {
                         ForEach(other_strength_exercises) {
-                            Text($0.name)
+                            ExerciseCardView(exercise: $0)
                         }
                         
                         NewExerciseButtonView()
                     }
                 }
+                .scrollIndicators(.hidden)
             }
             .padding(.horizontal)
         }

@@ -6,12 +6,21 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ExerciseInspectorView: View {
     @Environment(\.modelContext) private var model_context
     @Environment(\.dismiss) var dismiss_exercise_inspector
     
     @Bindable var exercise: Exercise
+    
+    enum ActiveGraph: CaseIterable {
+        case starting
+        case working
+        case max
+    }
+    
+    @State var active_graph: ActiveGraph = .starting
     
     var body: some View {
         NavigationStack {
@@ -48,16 +57,47 @@ struct ExerciseInspectorView: View {
                 }
                 .padding(.horizontal)
                 
-                ZStack {
-                    Rectangle()
-                        .background(.ultraThinMaterial)
-                        .environment(\.colorScheme, .light)
-                        .clipShape(RoundedRectangle(cornerRadius: exercise_card_corner_radius))
+                switch exercise.type {
+                case "cardio":
+                    switch exercise.cardio_metric {
+                    case "distance":
+                        ExerciseInspectorGraphView(array: exercise.cardio_distance ?? [0.0])
+                            .padding(.horizontal)
+                            .frame(height: exercise_inspector_graph_height)
+                    case "duration":
+                        ExerciseInspectorGraphView(array: exercise.cardio_duration ?? [0.0])
+                            .padding(.horizontal)
+                            .frame(height: exercise_inspector_graph_height)
+                    default:
+                        EmptyView()
+                    }
+                case "strength":
                     
-                    Text("no aggregated stats").bold().opacity(0.8)
+                    switch active_graph {
+                    case .starting:
+                        ExerciseInspectorGraphView(array: exercise.strength_starting_weight ?? [0.0])
+                            .padding(.horizontal)
+                            .frame(height: exercise_inspector_graph_height)
+                    case .working:
+                        ExerciseInspectorGraphView(array: exercise.strength_working_weight ?? [0.0])
+                            .padding(.horizontal)
+                            .frame(height: exercise_inspector_graph_height)
+                    case .max:
+                        ExerciseInspectorGraphView(array: exercise.strength_max_weight ?? [0.0])
+                            .padding(.horizontal)
+                            .frame(height: exercise_inspector_graph_height)
+                    }
+                    
+                    Picker("choose active graph", selection: $active_graph) {
+                        ForEach(ActiveGraph.allCases, id: \.self) { option in
+                            Text(String(describing: option))
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .padding(.horizontal)
+                default:
+                    EmptyView()
                 }
-                .frame(height: exercise_inspector_graph_height)
-                .padding(.horizontal)
                 
                 HStack {
                     Text("Exercise summary")
@@ -66,7 +106,7 @@ struct ExerciseInspectorView: View {
                     
                     Spacer()
                 }
-                .padding()
+                .padding(.horizontal)
                 
                 Group {
                     switch exercise.type {
@@ -74,15 +114,15 @@ struct ExerciseInspectorView: View {
                         switch exercise.cardio_metric {
                         case "distance":
                             HStack {
-                                ExerciseInspectorStatBubbleView(value: exercise.cardio_distance ?? 0.0, metric: ".mi", icon: "ruler", icon_color: Color("pink_leading"), description: "active distance")
+                                ExerciseInspectorStatBubbleView(value: (exercise.cardio_distance?[0] ?? 0.0), metric: ".mi", icon: "ruler", icon_color: Color("pink_leading"), description: "active distance")
                                 
-                                ExerciseInspectorStatBubbleView(value: exercise.cardio_distance ?? 0.0, metric: ".mi", icon: "ruler", icon_color: Color("blue_trailing"), description: "total distance")
+                                ExerciseInspectorStatBubbleView(value: exercise.cardio_distance?[0] ?? 0.0, metric: ".mi", icon: "ruler", icon_color: Color("blue_trailing"), description: "total distance")
                             }
                         case "duration":
                             HStack {
-                                ExerciseInspectorStatBubbleView(value: exercise.cardio_duration ?? 0.0, metric: ".min", icon: "ruler", icon_color: Color("pink_leading"), description: "active duration")
+                                ExerciseInspectorStatBubbleView(value: exercise.cardio_duration?[0] ?? 0.0, metric: ".min", icon: "ruler", icon_color: Color("pink_leading"), description: "active duration")
                                 
-                                ExerciseInspectorStatBubbleView(value: exercise.cardio_duration ?? 0.0, metric: ".min", icon: "clock", icon_color: Color("blue_trailing"), description: "total duration")
+                                ExerciseInspectorStatBubbleView(value: exercise.cardio_duration?[0] ?? 0.0, metric: ".min", icon: "clock", icon_color: Color("blue_trailing"), description: "total duration")
                             }
                         default:
                             EmptyView()
@@ -90,19 +130,19 @@ struct ExerciseInspectorView: View {
                     case "strength":
                         VStack {
                             HStack {
-                                ExerciseInspectorStatBubbleView(value: exercise.strength_starting_weight ?? 0.0, metric: ".lbs", icon: "dumbbell", icon_color: Color("pink_leading"), description: "active starting weight")
+                                ExerciseInspectorStatBubbleView(value: exercise.strength_starting_weight?[0] ?? 0.0, metric: ".lbs", icon: "dumbbell", icon_color: Color("pink_leading"), description: "active starting weight")
                                 
                                 ExerciseInspectorStatBubbleView(value: 123, metric: "sets", icon: "number", icon_color: Color("blue_trailing"), description: "total sets completed")
                             }
                             
                             HStack {
-                                ExerciseInspectorStatBubbleView(value: exercise.strength_workiing_weight ?? 0.0, metric: ".lbs", icon: "dumbbell", icon_color: Color("pink_leading"), description: "active working weight")
+                                ExerciseInspectorStatBubbleView(value: exercise.strength_working_weight?[0] ?? 0.0, metric: ".lbs", icon: "dumbbell", icon_color: Color("pink_leading"), description: "active working weight")
                                 
                                 ExerciseInspectorStatBubbleView(value: 469, metric: "reps", icon: "number", icon_color: Color("blue_trailing"), description: "total reps completed")
                             }
                             
                             HStack {
-                                ExerciseInspectorStatBubbleView(value: exercise.strength_max_weight ?? 0.0, metric: ".lbs", icon: "dumbbell", icon_color: Color("pink_leading"), description: "active max weight")
+                                ExerciseInspectorStatBubbleView(value: exercise.strength_max_weight?[0] ?? 0.0, metric: ".lbs", icon: "dumbbell", icon_color: Color("pink_leading"), description: "active max weight")
                                 
                                 ExerciseInspectorStatBubbleView(value: 789, metric: ".lbs", icon: "scalemass", icon_color: Color("blue_trailing"), description: "total tonnage")
                             }
@@ -112,23 +152,15 @@ struct ExerciseInspectorView: View {
                     }
                 }
                 .padding(.horizontal)
+                
             }
             .navigationTitle(exercise.name)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Button("Edit exercise") {
-                            
-                        }
-                        
-                        Button("Delete exercise") {
-                            model_context.delete(exercise)
-                            dismiss_exercise_inspector()
-                        }
-                    } label: {
-                        Image(systemName: "gear")
-                            .foregroundStyle(.white)
+                    NavigationLink(destination: EditExerciseView(exercise: exercise)) {
+                        Text("Edit")
+                            .foregroundStyle(Color("blue_trailing")).bold()
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
