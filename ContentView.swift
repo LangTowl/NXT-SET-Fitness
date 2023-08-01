@@ -9,16 +9,51 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var model_context
-    @Query var exercises: [Exercise]
-    
-    @State var test_number: Int = 0
-    @State var test_string: String = ""
+
+    @State var active_tab: Tab = .program_library
     
     var body: some View {
         NavigationStack {
-            VStack {
-                ExerciseLibrary()
+            ZStack(alignment: .bottom) {
+                Group {
+                    switch active_tab {
+                    case .program_library:
+                        ProgramLibrary()
+                    case .exercise_library:
+                        ExerciseLibrary()
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        active_tab = .program_library
+                    } label: {
+                        Image(systemName: "clipboard")
+                            .font(.title3)
+                            .foregroundStyle(.white)
+                    }
+                    
+                    Spacer()
+                    
+                    Button {
+                        active_tab = .exercise_library
+                    } label: {
+                        Image(systemName: "checklist.unchecked")
+                            .font(.title3)
+                            .foregroundStyle(.white)
+                    }
+                    
+                    Spacer()
+                }
+                .frame(height: 50)
+                .background {
+                    Color.clear
+                        .background(.ultraThinMaterial)
+                        .environment(\.colorScheme, .dark)
+                }
             }
         }
         .environment(\.colorScheme, .dark)

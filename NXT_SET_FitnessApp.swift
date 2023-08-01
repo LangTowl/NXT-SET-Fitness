@@ -15,6 +15,6 @@ struct NXT_SET_FitnessApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: Exercise.self)
+        .modelContainer(for: [Exercise.self, Program.self])
     }
 }

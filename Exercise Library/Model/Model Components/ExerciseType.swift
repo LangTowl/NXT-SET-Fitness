@@ -7,9 +7,4 @@
 
 import Foundation
 
-//enum ExerciseType: String, Codable {
-//    case cardio
-//    case strength
-//}
-
 let exercise_types: [String] = ["cardio", "strength"]
