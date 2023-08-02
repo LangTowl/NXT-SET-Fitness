@@ -31,8 +31,26 @@ struct ProgramLibraryCardView: View {
                     .padding()
                     
                     Spacer()
+                    
+                    NavigationLink(destination: ProgramInspectorView(program: program)) {
+                        
+                        HStack {
+                            Spacer()
+                            Text("Program Inspector")
+                                .foregroundStyle(Color("pink_leading"))
+                            Spacer()
+                        }
+                    }
+                    
+                    Spacer()
                 }
                 .frame(height: program_card_height / 2)
+                .background(
+                    Rectangle()
+                        .foregroundStyle(Color("blue_trailing"))
+                        .opacity(0.5)
+                        .clipShape(RoundedRectangle(cornerRadius: program_card_corner_radius))
+                )
             }
         }
         .frame(height: program_card_height)
