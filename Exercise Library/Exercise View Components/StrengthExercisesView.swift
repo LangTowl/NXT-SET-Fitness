@@ -11,7 +11,7 @@ import SwiftData
 struct StrengthExercisesView: View {
     
     @Environment(\.modelContext) private var model_context
-    @Query(filter: #Predicate<Exercise> {$0.type == ExerciseType.strength.rawValue }) var strength_exercises: [Exercise]
+    @Query(filter: #Predicate<Exercise> {$0.type == "strength" }) var strength_exercises: [Exercise]
     
     var chest_exercises: [Exercise] {
         strength_exercises.filter { $0.primary_muscle == PrimaryMuscle.chest.rawValue}
@@ -62,6 +62,213 @@ struct StrengthExercisesView: View {
     }
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            ScrollView {
+                HStack {
+                    Text("Chest")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(chest_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                HStack {
+                    Text("Back")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(back_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                HStack {
+                    Text("Shoulder")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(shoulder_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                HStack {
+                    Text("Tricep")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(tricep_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                HStack {
+                    Text("Bicep")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(bicep_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                HStack {
+                    Text("Forearm")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(forearm_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                HStack {
+                    Text("Core")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(core_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                HStack {
+                    Text("Quad")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(quad_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                HStack {
+                    Text("Hamstring")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(hamstring_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                HStack {
+                    Text("Glute")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(glute_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                HStack {
+                    Text("Calve")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(calve_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                HStack {
+                    Text("Other")
+                        .font(.title2).bold()
+                    Spacer()
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: exercise_card_spacing) {
+                        ForEach(other_strength_exercises) {
+                            ExerciseCardView(exercise: $0)
+                        }
+                        
+                        NewExerciseButtonView()
+                    }
+                }
+                .scrollIndicators(.hidden)
+            }
+            .padding(.horizontal)
+        }
     }
 }

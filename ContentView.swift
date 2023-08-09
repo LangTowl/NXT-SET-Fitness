@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var active_tab: Tab = .exercise_library
+    @State private var active_tab: Tab = .program_library
     
     var body: some View {
         NavigationStack {
@@ -17,7 +17,7 @@ struct ContentView: View {
                 Group {
                     switch active_tab {
                     case .program_library:
-                        Text("Program Library")
+                        ProgramLibraryView()
                     case .exercise_library:
                         ExerciseLibraryView()
                     }

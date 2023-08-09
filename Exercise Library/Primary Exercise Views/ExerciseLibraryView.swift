@@ -13,31 +13,48 @@ struct ExerciseLibraryView: View {
     
     var body: some View {
         NavigationStack {
-            
-            Picker("Exercise type", selection: $active_view) {
-                ForEach(ExerciseType.allCases, id: \.self) { type in
-                    Text(type.rawValue)
-                }
-            }
-            .pickerStyle(.segmented)
-            .padding(.horizontal)
-            
             Group {
                 switch active_view {
                 case .strength:
-                    Text("Boop")
+                    StrengthExercisesView()
                 case .cardio:
-                    Text("bop")
+                    CardioExercisesView()
                 }
             }
-            .navigationTitle("Exercise Library")
+            .padding(.top)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink(destination: NewExerciseView()) {
-                        Text("Add")
+                        Image(systemName: "plus")
                             .foregroundStyle(Color("trailing"))
                             .bold()
                     }
+                }
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        withAnimation {
+                            active_view = .strength
+                        }
+                    } label: {
+                        Text("Strength")
+                            .font(.largeTitle).bold()
+                            .foregroundStyle(active_view == .strength ? .white : .white.opacity(0.5))
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        withAnimation {
+                            active_view = .cardio
+                        }
+                    } label: {
+                        Text("Cardio")
+                            .font(.largeTitle).bold()
+                            .foregroundStyle(active_view == .cardio ? .white : .white.opacity(0.5))
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
         }
