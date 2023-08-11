@@ -14,3 +14,4 @@ let program_card_corner_radius: Double = 15
 let program_day_button_radius: Double = 45
 
 let weeklky_program_ids: [String] = ["M", "T", "W", "T", "F", "S", "S"]
+let weekly_program_names: [String] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]

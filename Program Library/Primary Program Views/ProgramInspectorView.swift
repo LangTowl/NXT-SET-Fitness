@@ -20,18 +20,19 @@ struct ProgramInspectorView: View {
     
     @State private var focus: Int = 0
     @State private var show_popover: Bool = false
+    @State private var name: String = ""
     
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 15) {
-                ForEach(0...(program.program_days.count - 1), id: \.self) { i in
+                ForEach(0...(ordered_days.count - 1), id: \.self) { i in
                     Button {
                         focus = i
                     } label: {
                         ZStack {
                             Circle()
                                 .frame(width: program_day_button_radius)
-                                .foregroundStyle(Color("leading"))
+                                .foregroundStyle(ordered_days[i].is_off_day == true ?  Color("trailing") : Color("leading"))
                                 .opacity(focus == i ? 1.0 : 0.5)
                             
                             switch program.type {
@@ -77,6 +78,14 @@ struct ProgramInspectorView: View {
             Text(ordered_days[focus].name)
                 .font(.title).bold()
             
+            VStack {
+                Spacer()
+                
+                Text(program.type == ProgramType.daily.rawValue ? "Day \(focus + 1)" : weekly_program_names[focus])
+                    .font(.footnote)
+                    .foregroundStyle(.white.opacity(0.5))
+            }
+            
             Spacer()
             
             Button {
@@ -87,16 +96,45 @@ struct ProgramInspectorView: View {
                     .bold()
             }
             .buttonStyle(PlainButtonStyle())
+            .padding(.horizontal)
+            
+            if ordered_days[focus].is_off_day != true {
+                NavigationLink(destination: ProgramExerciseAdderView(program_day: ordered_days[focus])) {
+                    Text("Add")
+                        .foregroundStyle(Color("trailing"))
+                        .bold()
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
         }
         .padding(.horizontal)
+        .frame(height: 25)
         
         NavigationStack {
-            List {
-                ForEach(ordered_days, id: \.self) { day in
-                    Text(day.name)
+            Group {
+                if ordered_days[focus].is_off_day == true {
+                    VStack {
+                        Spacer()
+                        
+                        Text("Off Day")
+                            .font(.largeTitle)
+                            .bold()
+                        
+                        Text("No workouts scheduled")
+                            .font(.footnote)
+                            .opacity(0.5)
+                        
+                        Spacer()
+                    }
+                } else {
+                    List {
+                        ForEach(ordered_days, id: \.self) { day in
+                            Text("\(day.name) \(String(day.is_off_day))")
+                        }
+                        
+//                        Text(String(focus))
+                    }
                 }
-                
-                Text(String(focus))
             }
             .navigationTitle(program.name)
             .navigationBarBackButtonHidden(true)
@@ -120,6 +158,60 @@ struct ProgramInspectorView: View {
                             .foregroundStyle(.white)
                     }
                 }
+            }
+            .sheet(isPresented: $show_popover) {
+                NavigationStack {
+                    Form {
+                        Section(footer: Text("Choose a new name for this program day.")) {
+                            TextField("New name", text: $name)
+                        }
+                        
+                        Section(footer: Text("Off days have no scheduled workout sessions.")) {
+                            Button {
+                                ordered_days[focus].is_off_day.toggle()
+                                try? model_context.save()
+                            } label: {
+                                Text("Make this day an off day")
+                                    .foregroundStyle(Color("trailing"))
+                                    .bold()
+                            }
+                        }
+                    }
+                    .navigationTitle("Edit \(ordered_days[focus].name)")
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                if name != "" {
+                                    ordered_days[focus].name = name
+                                    try? model_context.save()
+                                    name = ""
+                                    show_popover.toggle()
+                                }
+                            } label: {
+                                if name != "" {
+                                    Text("Save")
+                                        .foregroundStyle(Color("trailing"))
+                                        .bold()
+                                } else {
+                                    Text("Save")
+                                        .foregroundStyle(.white.opacity(0.5))
+                                }
+                            }
+                        }
+                        
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                show_popover.toggle()
+                            } label: {
+                                Text("Cancel")
+                                    .foregroundStyle(Color("leading"))
+                            }
+                        }
+                    }
+                }
+                .presentationDetents([.medium])
+                .presentationBackground(.ultraThinMaterial)
+                .environment(\.colorScheme, .dark)
             }
         }
         .padding(.horizontal)

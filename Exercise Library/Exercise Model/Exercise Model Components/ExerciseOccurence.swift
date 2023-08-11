@@ -7,7 +7,3 @@
 
 import Foundation
 
-struct ExerciseOccurence: Codable {
-    var program: String
-    var order: Int
-}

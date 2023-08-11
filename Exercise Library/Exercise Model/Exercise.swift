@@ -25,8 +25,6 @@ class Exercise {
     var distance: Double?
     var duration: Double?
     
-    var occurances = [ExerciseOccurence]()
-    
     init(name: String, type: ExerciseType.RawValue) {
         self.name = name
         self.type = type
