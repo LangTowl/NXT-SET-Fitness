@@ -14,7 +14,7 @@ class ProgramDay {
     var name: String
     var order: Int
     var is_off_day: Bool = false
-    var exercises = [Exercise]()
+    @Relationship(.cascade) var exercises = [AddedExercise]()
     
     init(name: String, order: Int) {
         self.name = name

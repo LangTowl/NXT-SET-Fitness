@@ -14,6 +14,6 @@ struct NXT_SET_Beta_5App: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: [Exercise.self, Program.self, ProgramDay.self])
+        .modelContainer(for: [Exercise.self, Program.self, ProgramDay.self, AddedExercise.self])
     }
 }

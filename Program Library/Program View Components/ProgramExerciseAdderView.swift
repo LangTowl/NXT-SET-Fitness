@@ -14,6 +14,7 @@ struct ProgramExerciseAdderView: View {
     @State var show_popover: Bool = false
     
     @Bindable var program_day: ProgramDay
+    var passed_context: ModelContext
     @Environment(\.modelContext) private var model_context
     @Environment(\.dismiss) var dismiss_exercise_adder
     
@@ -136,6 +137,18 @@ struct ProgramExerciseAdderView: View {
                                 Text(exercise.name)
                                     .swipeActions {
                                         Button("Add") {
+                                            program_day.exercises.append(AddedExercise(
+                                                name: exercise.name,
+                                                type: exercise.type,
+                                                primary_muscle: exercise.primary_muscle ?? "nil",
+                                                secondary_muscle: exercise.secondary_muscle ?? "nil",
+                                                starting_weight: exercise.starting_weight ?? 0,
+                                                working_weight: exercise.working_weight ?? 0,
+                                                max_weight: exercise.max_weight ?? 0
+                                            ))
+                                            
+                                            try? model_context.save()
+                                            
                                             show_popover.toggle()
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                                 show_popover.toggle()

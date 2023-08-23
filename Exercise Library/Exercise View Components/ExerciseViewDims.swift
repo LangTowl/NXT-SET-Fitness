@@ -13,7 +13,7 @@ let exercise_card_height: Double = (UIScreen.main.bounds.width / 2.5)
 let exercise_card_spacing: Double = 15
 let exercise_card_corner_radius: Double = 15
 
-let exercise_inspector_graph_width: Double = UIScreen.main.bounds.width
+let exercise_inspector_graph_width: Double = UIScreen.main.bounds.width * 0.9
 let exercise_inspector_graph_height: Double = (UIScreen.main.bounds.width / 1.75)
 
 let exercise_inspector_bubble_width: Double = (UIScreen.main.bounds.width / 2.75)

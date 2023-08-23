@@ -18,6 +18,14 @@ struct ProgramInspectorView: View {
         program.program_days.sorted(by: { $0.order < $1.order })
     }
     
+    var focused_day: ProgramDay {
+        return ordered_days[focus]
+    }
+    
+//    var ordered_exercises: [AddedExercise] {
+//        ordered_days[focus].exercises.sorted(by: { $0.order < $1.order })
+//    }
+    
     @State private var focus: Int = 0
     @State private var show_popover: Bool = false
     @State private var name: String = ""
@@ -99,7 +107,7 @@ struct ProgramInspectorView: View {
             .padding(.horizontal)
             
             if ordered_days[focus].is_off_day != true {
-                NavigationLink(destination: ProgramExerciseAdderView(program_day: ordered_days[focus])) {
+                NavigationLink(destination: ProgramExerciseAdderView(program_day: ordered_days[focus], passed_context: model_context)) {
                     Text("Add")
                         .foregroundStyle(Color("trailing"))
                         .bold()
@@ -117,7 +125,7 @@ struct ProgramInspectorView: View {
                         Spacer()
                         
                         Text("Off Day")
-                            .font(.largeTitle)
+                            .font(.title)
                             .bold()
                         
                         Text("No workouts scheduled")
@@ -127,28 +135,62 @@ struct ProgramInspectorView: View {
                         Spacer()
                     }
                 } else {
-                    List {
-                        ForEach(ordered_days, id: \.self) { day in
-                            Text("\(day.name) \(String(day.is_off_day))")
+                    if ordered_days[focus].exercises.count == 0 {
+                        VStack {
+                            Spacer()
+                            
+                            Text("No exercises added")
+                                .font(.title)
+                                .bold()
+                            
+                            Spacer()
                         }
-                        
-//                        Text(String(focus))
+                    } else {
+                        List {
+                            ForEach(focused_day.exercises, id: \.self) { exercise in
+                                NavigationLink(destination: AddedExerciseInspectorView(exercise: exercise)) {
+                                    VStack {
+                                        HStack {
+                                            Text(exercise.name)
+                                                .bold()
+                                            Spacer()
+                                        }
+                                        
+                                        HStack {
+                                            Text("sets:")
+                                                .opacity(0.5)
+                                            Text(String(exercise.sets))
+                                            
+                                            Spacer()
+                                            
+                                            Text("reps:")
+                                                .opacity(0.5)
+                                            Text(String(exercise.reps))
+                                            
+                                            Spacer()
+                                        }
+                                    }
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                            }
+                        }
+                        .listStyle(.plain)
                     }
                 }
             }
             .navigationTitle(program.name)
             .navigationBarBackButtonHidden(true)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss_program_inspector()
-                        model_context.delete(program)
-                    } label: {
-                        Text("Delete")
-                            .foregroundStyle(Color("leading"))
-                            .bold()
-                    }
-                }
+//                ToolbarItem(placement: .topBarLeading) {
+//                    Button {
+//                        dismiss_program_inspector()
+//                        model_context.delete(program)
+//                    } label: {
+//                        Text("Delete")
+//                            .foregroundStyle(Color("leading"))
+//                            .bold()
+//                    }
+//                }
                 
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
@@ -170,6 +212,7 @@ struct ProgramInspectorView: View {
                             Button {
                                 ordered_days[focus].is_off_day.toggle()
                                 try? model_context.save()
+                                show_popover.toggle()
                             } label: {
                                 Text("Make this day an off day")
                                     .foregroundStyle(Color("trailing"))
@@ -214,6 +257,6 @@ struct ProgramInspectorView: View {
                 .environment(\.colorScheme, .dark)
             }
         }
-        .padding(.horizontal)
+//        .padding(.horizontal)
     }
 }
