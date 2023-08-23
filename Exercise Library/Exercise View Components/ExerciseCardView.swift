@@ -38,6 +38,37 @@ struct ExerciseCardView: View {
                     }
                     .frame(width: exercise_card_width, height: exercise_card_height)
                 }
+                
+                switch exercise.type {
+                case ExerciseType.strength.rawValue:
+                    HStack {
+                        Text(exercise.primary_muscle ?? "primary")
+                            .foregroundStyle(Color("leading"))
+                            .font(.footnote)
+                        Image(systemName: "arrow.right")
+                            .font(.footnote)
+                        Text(exercise.secondary_muscle ?? "secondary")
+                            .foregroundStyle(Color("trailing"))
+                            .font(.footnote)
+                        Spacer()
+                    }
+                    .padding(.leading)
+                case ExerciseType.cardio.rawValue:
+                    HStack {
+                        Text(exercise.cardio_type ?? "cardio")
+                            .foregroundStyle(Color("leading"))
+                            .font(.footnote)
+                        Image(systemName: "arrow.right")
+                            .font(.footnote)
+                        Text(exercise.cardio_metric ?? "metric")
+                            .foregroundStyle(Color("trailing"))
+                            .font(.footnote)
+                        Spacer()
+                    }
+                    .padding(.leading)
+                default:
+                    EmptyView()
+                }
             }
         }
         .buttonStyle(PlainButtonStyle())

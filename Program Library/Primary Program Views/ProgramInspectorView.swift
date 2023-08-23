@@ -14,6 +14,7 @@ struct ProgramInspectorView: View {
     @Environment(\.dismiss) var dismiss_program_inspector
     
     @Bindable var program: Program
+    
     var ordered_days: [ProgramDay] {
         program.program_days.sorted(by: { $0.order < $1.order })
     }
@@ -22,9 +23,9 @@ struct ProgramInspectorView: View {
         return ordered_days[focus]
     }
     
-//    var ordered_exercises: [AddedExercise] {
-//        ordered_days[focus].exercises.sorted(by: { $0.order < $1.order })
-//    }
+    var ordered_exercises: [AddedExercise] {
+        focused_day.exercises.sorted(by: {($0.order ?? 0) < ($1.order ?? 0)})
+    }
     
     @State private var focus: Int = 0
     @State private var show_popover: Bool = false
@@ -147,7 +148,7 @@ struct ProgramInspectorView: View {
                         }
                     } else {
                         List {
-                            ForEach(focused_day.exercises, id: \.self) { exercise in
+                            ForEach(ordered_exercises, id: \.self) { exercise in
                                 NavigationLink(destination: AddedExerciseInspectorView(exercise: exercise)) {
                                     VStack {
                                         HStack {

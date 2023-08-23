@@ -36,6 +36,9 @@ struct AddedExerciseInspectorView: View {
                 default:
                     Text(exercise.type ?? "Fuck")
                 }
+                
+                Text("Order: \(String(exercise.order ?? -1))")
+                    .opacity(0.5)
             }
             .navigationTitle(exercise.name)
             .navigationBarBackButtonHidden(true)

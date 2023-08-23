@@ -13,8 +13,9 @@ class AddedExercise {
     let id = UUID()
     var sets: Int = 0
     var reps: Int = 0
-    
     var name: String
+    
+    var order: Int?
     var type: ExerciseType.RawValue?
     
     var primary_muscle: PrimaryMuscle.RawValue?
@@ -37,7 +38,7 @@ class AddedExercise {
         self.type = type
     }
     
-    init(name: String, type: ExerciseType.RawValue, primary_muscle: PrimaryMuscle.RawValue, secondary_muscle: String, starting_weight: Double, working_weight: Double, max_weight: Double) {
+    init(name: String, type: ExerciseType.RawValue, primary_muscle: PrimaryMuscle.RawValue, secondary_muscle: String, starting_weight: Double, working_weight: Double, max_weight: Double, order: Int) {
         self.name = name
         self.type = type
         self.primary_muscle = primary_muscle
@@ -45,21 +46,24 @@ class AddedExercise {
         self.starting_weight = starting_weight
         self.working_weight = working_weight
         self.max_weight = max_weight
+        self.order = order
     }
     
-    init(name: String, type: ExerciseType.RawValue, cardio_type: CardioType.RawValue, cardio_metric: CardioMetric.RawValue, distance: Double) {
+    init(name: String, type: ExerciseType.RawValue, cardio_type: CardioType.RawValue, cardio_metric: CardioMetric.RawValue, distance: Double, order: Int) {
         self.name = name
         self.type = type
         self.cardio_type = cardio_type
         self.cardio_metric = cardio_metric
         self.distance = distance
+        self.order = order
     }
     
-    init(name: String, type: ExerciseType.RawValue, cardio_type: CardioType.RawValue, cardio_metric: CardioMetric.RawValue, duration: Double) {
+    init(name: String, type: ExerciseType.RawValue, cardio_type: CardioType.RawValue, cardio_metric: CardioMetric.RawValue, duration: Double, order: Int) {
         self.name = name
         self.type = type
         self.cardio_type = cardio_type
         self.cardio_metric = cardio_metric
         self.duration = duration
+        self.order = order
     }
 }
