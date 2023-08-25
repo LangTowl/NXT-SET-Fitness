@@ -29,7 +29,9 @@ struct ProgramInspectorView: View {
     
     @State private var focus: Int = 0
     @State private var show_popover: Bool = false
+    @State private var show_order_editor_popover: Bool = false
     @State private var name: String = ""
+    @State private var buffer: [String] = []
     
     var body: some View {
         ScrollView(.horizontal) {
@@ -176,23 +178,16 @@ struct ProgramInspectorView: View {
                             }
                         }
                         .listStyle(.plain)
+                        
+                        // This right here is so ass but who cares
+                        Text(String(buffer.count))
+                            .foregroundStyle(.clear)
                     }
                 }
             }
             .navigationTitle(program.name)
             .navigationBarBackButtonHidden(true)
             .toolbar {
-//                ToolbarItem(placement: .topBarLeading) {
-//                    Button {
-//                        dismiss_program_inspector()
-//                        model_context.delete(program)
-//                    } label: {
-//                        Text("Delete")
-//                            .foregroundStyle(Color("leading"))
-//                            .bold()
-//                    }
-//                }
-                
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
                         dismiss_program_inspector()
@@ -216,6 +211,21 @@ struct ProgramInspectorView: View {
                                 show_popover.toggle()
                             } label: {
                                 Text("Make this day an off day")
+                                    .foregroundStyle(Color("trailing"))
+                                    .bold()
+                            }
+                        }
+                        
+                        Section(footer: Text("Edit the order in which exercises apear.")) {
+                            Button {
+                                buffer = update_buffer(array: ordered_exercises)
+                                show_popover.toggle()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    print(buffer)
+                                    show_order_editor_popover.toggle()
+                                }
+                            } label: {
+                                Text("Reorganize exercises")
                                     .foregroundStyle(Color("trailing"))
                                     .bold()
                             }
@@ -257,7 +267,47 @@ struct ProgramInspectorView: View {
                 .presentationBackground(.ultraThinMaterial)
                 .environment(\.colorScheme, .dark)
             }
+            .sheet(isPresented: $show_order_editor_popover) {
+                NavigationStack {
+                    List($buffer, id: \.self, editActions: .all) { $name in
+                        HStack {
+                            Text(name)
+                            Spacer()
+                            Image(systemName: "line.3.horizontal")
+                                .foregroundStyle(.white).opacity(0.5)
+                        }
+                    }
+                    .listStyle(.plain)
+                    .navigationTitle("Edit Order")
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                buffer = []
+                                show_order_editor_popover.toggle()
+                            } label: {
+                                Text("Cancel")
+                                    .foregroundStyle(Color("leading"))
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                        
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                conform_to_buffer(array: buffer, exercises: ordered_exercises)
+                                buffer = []
+                                show_order_editor_popover.toggle()
+                            } label: {
+                                Text("Done")
+                                    .foregroundStyle(Color("trailing"))
+                                    .bold()
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                }
+                .presentationDetents([.large])
+                .environment(\.colorScheme, .dark)
+            }
         }
-//        .padding(.horizontal)
     }
 }
