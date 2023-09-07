@@ -33,9 +33,7 @@ struct TodaysWorkoutView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                Spacer()
-                
+            ScrollView {
                 NavigationLink(destination: Text("Start workout")) {
                     ZStack {
                         Circle()
@@ -54,8 +52,21 @@ struct TodaysWorkoutView: View {
                     }
                 }
                 .buttonStyle(PlainButtonStyle())
+                .padding()
                 
-                Spacer()
+                HStack {
+                    ExerciseInspectorStatBubbleView(value: count_total_sets(workout: todays_workout!), metric: "sets", icon: "number", icon_color: Color("leading"), description: "total sets")
+                    
+                    ExerciseInspectorStatBubbleView(value: count_total_reps(workout: todays_workout!), metric: "reps", icon: "number", icon_color: Color("trailing"), description: "total reps")
+                }
+                .padding(.horizontal)
+                
+                HStack {
+                    ExerciseInspectorStatBubbleView(value: count_total_exercises(workout: todays_workout!), metric: "exercises", icon: "list.number", icon_color: Color("leading"), description: "total exercises")
+                    
+                    ExerciseInspectorStatBubbleView(value: aproximate_duration(workout: todays_workout!), metric: "minutes", icon: "clock", icon_color: Color("trailing"), description: "aprox. duration")
+                }
+                .padding(.horizontal)
             }
             .navigationTitle(active_program?.name ?? "No program active")
         }
