@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ProgramLibraryCardView: View {
     
     @Bindable var program: Program
+    @Query private var programs: [Program]
     
     var body: some View {
         ZStack {
@@ -19,6 +21,25 @@ struct ProgramLibraryCardView: View {
                 .clipShape(RoundedRectangle(cornerRadius: program_card_corner_radius))
             
             VStack {
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        for i in 0...(programs.count - 1) {
+                            if programs[i].name == program.name {
+                                programs[i].active = true
+                            } else {
+                                programs[i].active = false
+                            }
+                        }
+                    } label: {
+                        Text(program.active == true ? "deactivate" : "activate")
+                            .foregroundStyle(.white)
+                            .bold()
+                    }
+                }
+                .padding()
+                
                 Spacer()
                 
                 VStack {

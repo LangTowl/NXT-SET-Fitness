@@ -26,14 +26,10 @@ func update_buffer(array: [AddedExercise]) -> [String] {
 }
 
 func conform_to_buffer(array: [String], exercises: [AddedExercise]) {
-    
-    @Environment(\.modelContext) var model_context
-    
     for i in 0...(array.count - 1) {
         for j in 0...(exercises.count - 1) {
             if array[i] == exercises[j].name {
                 exercises[j].order = i
-//                try? model_context.save()
             }
         }
     }

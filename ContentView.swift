@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var active_tab: Tab = .program_library
+    @State private var active_tab: Tab = .todays_workout
     
     var body: some View {
         NavigationStack {
@@ -20,6 +20,8 @@ struct ContentView: View {
                         ProgramLibraryView()
                     case .exercise_library:
                         ExerciseLibraryView()
+                    case .todays_workout:
+                        TodaysWorkoutView()
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -31,6 +33,16 @@ struct ContentView: View {
                         active_tab = .program_library
                     } label: {
                         Image(systemName: active_tab == .program_library ? "clipboard.fill" : "clipboard")
+                            .font(.title3)
+                            .foregroundStyle(.white)
+                    }
+                    
+                    Spacer()
+                    
+                    Button {
+                        active_tab = .todays_workout
+                    } label: {
+                        Image(systemName: active_tab == .todays_workout ? "dumbbell.fill" : "dumbbell")
                             .font(.title3)
                             .foregroundStyle(.white)
                     }

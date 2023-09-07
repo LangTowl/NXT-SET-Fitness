@@ -30,8 +30,10 @@ struct ProgramInspectorView: View {
     @State private var focus: Int = 0
     @State private var show_popover: Bool = false
     @State private var show_order_editor_popover: Bool = false
+    @State private var show_program_info_popover: Bool = false
     @State private var name: String = ""
     @State private var buffer: [String] = []
+    @State private var active_day: String = ""
     
     var body: some View {
         ScrollView(.horizontal) {
@@ -45,6 +47,12 @@ struct ProgramInspectorView: View {
                                 .frame(width: program_day_button_radius)
                                 .foregroundStyle(ordered_days[i].is_off_day == true ?  Color("trailing") : Color("leading"))
                                 .opacity(focus == i ? 1.0 : 0.5)
+                                .overlay {
+                                    if ordered_days[i].name == program.active_day {
+                                        Circle()
+                                            .stroke(.white, lineWidth: 1)
+                                    }
+                                }
                             
                             switch program.type {
                             case ProgramType.daily.rawValue:
@@ -81,6 +89,7 @@ struct ProgramInspectorView: View {
                     }
                 }
             }
+            .padding(.vertical, 5)
         }
         .padding(.horizontal)
         .scrollIndicators(.hidden)
@@ -196,6 +205,18 @@ struct ProgramInspectorView: View {
                             .foregroundStyle(.white)
                     }
                 }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        active_day = program.active_day
+                        print(active_day)
+                        show_program_info_popover.toggle()
+                    } label: {
+                        Image(systemName: "calendar")
+                            .foregroundStyle(.white)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
             }
             .sheet(isPresented: $show_popover) {
                 NavigationStack {
@@ -306,6 +327,55 @@ struct ProgramInspectorView: View {
                     }
                 }
                 .presentationDetents([.large])
+                .environment(\.colorScheme, .dark)
+            }
+            .sheet(isPresented: $show_program_info_popover) {
+                NavigationStack {
+                    ScrollView {
+                        ForEach(0...(ordered_days.count - 1), id: \.self) { i in
+                            Button {
+                                program.active_day = ordered_days[i].name
+                            } label: {
+                                HStack {
+                                    Text(ordered_days[i].name)
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: program.active_day == ordered_days[i].name ? "circle.fill" : "circle" )
+                                }
+                                .foregroundStyle(.white)
+                            }
+                            .padding(.vertical, 5)
+                        }
+                        
+                        Text(program.active_day)
+                            .foregroundStyle(.red)
+                    }
+                    .padding(.horizontal)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                show_program_info_popover.toggle()
+                            } label: {
+                                Text("Cancel")
+                                    .foregroundStyle(Color("leading"))
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                        
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                show_program_info_popover.toggle()
+                            } label: {
+                                Text("Done")
+                                    .foregroundStyle(Color("trailing"))
+                                    .bold()
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                }
+                .presentationDetents([.medium])
                 .environment(\.colorScheme, .dark)
             }
         }

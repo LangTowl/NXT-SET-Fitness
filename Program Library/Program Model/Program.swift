@@ -14,6 +14,8 @@ class Program {
     var name: String
     var type: ProgramType.RawValue
     @Relationship(.cascade) var program_days = [ProgramDay]()
+    var active: Bool = false
+    var active_day: String = ""
 
     
     init(name: String, type: ProgramType.RawValue) {
