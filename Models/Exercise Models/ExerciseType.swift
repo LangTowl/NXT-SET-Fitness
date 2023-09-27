@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ExerciseType: String, Codable {
+enum ExerciseType: String, Codable, CaseIterable {
     case strength
     case cardio
 }

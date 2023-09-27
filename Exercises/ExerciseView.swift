@@ -12,27 +12,48 @@ struct ExerciseView: View {
     
     // Model context instantiation
     @Environment(\.modelContext) private var model_context
-    @Query private var exercises: [Exercise]
+    @Query(filter: #Predicate<User> {$0.signed_in == true }) var user: [User]
     
     var body: some View {
         NavigationStack {
-            List {
-                if exercises.isEmpty {
-                    EmptyView()
+            Group {
+                if user.isEmpty  {
+                    VStack {
+                        Spacer()
+                        Text("No active users detected")
+                            .font(.title2)
+                        Image(systemName: "person")
+                            .font(.title3)
+                            .foregroundStyle(.red)
+                        Spacer()
+                    }
                 } else {
-                    ForEach(exercises) { exercise in
-                        Text(exercise.name)
+                    List {
+                        ForEach(user[0].exercises) { exercise in
+                            NavigationLink(destination: Text(exercise.name)) {
+                                HStack {
+                                    Text(exercise.name)
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: exercise.type == .strength ? "dumbbell.fill" : "figure.run")
+                                        .foregroundStyle(.green)
+                                }
+                            }
+                        }
                     }
                 }
             }
             .navigationTitle("Exercises")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        let new_exerise = Exercise(name: "Test", type: .strength)
-                        model_context.insert(new_exerise)
-                    } label: {
+                    if user.isEmpty {
                         Image(systemName: "plus")
+                            .foregroundStyle(.gray)
+                    } else {
+                        NavigationLink(destination: NewExerciseView(user: user[0])) {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
             }

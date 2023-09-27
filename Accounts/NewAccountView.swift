@@ -25,7 +25,7 @@ struct NewAccountView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(footer: Text("Enter your desired name")) {
+                Section(footer: Text("Enter your desired name.")) {
                     TextField("Name", text: $name)
                         .autocapitalization(.none)
                 }
