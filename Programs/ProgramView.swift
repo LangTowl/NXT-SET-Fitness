@@ -18,14 +18,45 @@ struct ProgramView: View {
         NavigationStack {
             Group {
                 if user.isEmpty {
-                    EmptyView()
+                    VStack {
+                        Spacer()
+                        Text("No active users detected")
+                            .font(.title2)
+                        Image(systemName: "person")
+                            .font(.title3)
+                            .foregroundStyle(.red)
+                        Spacer()
+                    }
                 } else {
-                    ScrollView {
-                        Text(user[0].name)
+                    List {
+                        ForEach(user[0].programs) { program in
+                            NavigationLink(destination: ProgramInspectorView(program: program)) {
+                                HStack {
+                                    Text(program.name)
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: program.activate_program == true ? "dumbbell.fill" : "dumbbell")
+                                        .foregroundStyle(program.activate_program == true ? .green : .red)
+                                }
+                            }
+                        }
                     }
                 }
             }
             .navigationTitle("Programs")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    if user.isEmpty {
+                        Image(systemName: "plus")
+                            .foregroundColor(.gray)
+                    } else {
+                        NavigationLink(destination: NewProgramView(user: user[0])) {
+                            Image(systemName: "plus")
+                        }
+                    }
+                }
+            }
         }
     }
 }

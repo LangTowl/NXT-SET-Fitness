@@ -17,6 +17,9 @@ class User {
     var password: String
     var signed_in: Bool = false
     
+    // User programs
+    var programs: [Program] = []
+    
     // User exercises
     var exercises: [Exercise] = []
     

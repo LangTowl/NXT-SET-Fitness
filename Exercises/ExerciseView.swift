@@ -30,7 +30,7 @@ struct ExerciseView: View {
                 } else {
                     List {
                         ForEach(user[0].exercises) { exercise in
-                            NavigationLink(destination: Text(exercise.name)) {
+                            NavigationLink(destination: ExerciseInspectorView(exercise: exercise, index: find_exercise(exercises: user[0].exercises, id: exercise.id))) {
                                 HStack {
                                     Text(exercise.name)
                                     

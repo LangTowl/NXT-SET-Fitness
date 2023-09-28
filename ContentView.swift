@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var active_tab: Tab = .exercises_page
+    @State private var active_tab: Tab = .program_page
     
     var body: some View {
         NavigationStack {
