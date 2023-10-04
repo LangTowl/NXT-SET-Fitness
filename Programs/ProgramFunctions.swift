@@ -14,3 +14,42 @@ func verify_active_program(program: Program, program_list: [Program]) {
         }
     }
 }
+
+func find_program(programs: [Program], id: UUID) -> Int {
+    for i in 0...(programs.count - 1) {
+        if programs[i].id == id {
+            return i
+        }
+    }
+    
+    return 0
+}
+
+func is_exercise_in_program_day(day: ProgramDay, exercise: Exercise) -> Bool {
+    if day.exercises.isEmpty {
+        return false
+    } else {
+        for i in 0...(day.exercises.count - 1) {
+            if day.exercises[i].id == exercise.id {
+                return true
+            }
+        }
+    }
+    
+    return false
+}
+
+func find_index_of_exercise(day: ProgramDay, exercise: Exercise) -> Int {
+    if day.exercises.isEmpty {
+        return -1
+    } else {
+        for i in 0...(day.exercises.count - 1) {
+            if day.exercises[i].id == exercise.id {
+                return i
+            }
+        }
+    }
+    
+    return -1;
+}
+

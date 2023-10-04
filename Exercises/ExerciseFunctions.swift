@@ -10,9 +10,9 @@ import Foundation
 func find_exercise(exercises: [Exercise], id: UUID) -> Int {
     for i in 0...(exercises.count - 1) {
         if exercises[i].id == id {
-            return i;
+            return i
         }
     }
     
-    return 0;
+    return 0
 }

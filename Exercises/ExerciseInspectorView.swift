@@ -19,7 +19,6 @@ struct ExerciseInspectorView: View {
     
     // Passed variables
     @Bindable var exercise: Exercise
-    let index: Int
     
     var body: some View {
         NavigationStack {
@@ -67,14 +66,15 @@ struct ExerciseInspectorView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        if user.count != 0 {
-                            user[0].exercises.remove(at: index)
-                        }
+                        let index = find_exercise(exercises: user[0].exercises, id: exercise.id)
+                        
+                        user[0].exercises.remove(at: index)
                         
                         dismiss_exercise_insepctor_view()
                     } label: {
                         Text("Delete")
                             .foregroundStyle(.red)
+                            .bold()
                     }
                 }
             }
