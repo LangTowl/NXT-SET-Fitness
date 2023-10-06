@@ -14,6 +14,7 @@ class Exercise {
     let id = UUID()
     var name: String
     var type: ExerciseType
+    var ledger: [LedgerItem] = []
     
     // Strength exercise members
     var primary_muscle: PrimaryMuscle?

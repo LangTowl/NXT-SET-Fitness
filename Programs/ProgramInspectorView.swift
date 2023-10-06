@@ -5,10 +5,6 @@
 //  Created by Lang Towl on 9/27/23.
 //
 
-/*
- UPDATE TOP BAR NAME SO THAT WEEKDAYS SHOW THEIR WEEKDAY NAME AND DAILY PROGRAMS SHOW DAY 1 DAY 2 SO ON 
- */
-
 import SwiftUI
 
 struct ProgramInspectorView: View {
@@ -35,6 +31,10 @@ struct ProgramInspectorView: View {
         }
         
         return ordered_days[0]
+    }
+    
+    var ordered_exercises: [Exercise] {
+        focused_day.exercises.sorted(by: { find_in_ledger(day: focused_day, exercise: $0) < find_in_ledger(day: focused_day, exercise: $1) })
     }
     
     var body: some View {
@@ -89,7 +89,7 @@ struct ProgramInspectorView: View {
                     }
                 } else {
                     List {
-                        ForEach(focused_day.exercises, id: \.self) { exercise in
+                        ForEach(ordered_exercises, id: \.self) { exercise in
                             Text(exercise.name)
                         }
                     }

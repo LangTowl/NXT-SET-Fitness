@@ -55,3 +55,16 @@ func find_index_of_exercise(day: ProgramDay, exercise: Exercise) -> Int {
     return -1;
 }
 
+func update_ledger(day: ProgramDay, exercise: Exercise) {
+    exercise.ledger.append(LedgerItem(day: day.id, exercise: exercise.id, index: day.exercises.count))
+}
+
+func find_in_ledger(day: ProgramDay, exercise: Exercise) -> Int {
+    for i in 0...(exercise.ledger.count - 1) {
+        if exercise.ledger[i].day == day.id {
+            return exercise.ledger[i].index
+        }
+    }
+    
+    return 0;
+}

@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+// TODO: create a function that updates the ledger property in the exercise class to track which exercises programs are in, and what order they are in that program
+
 struct ProgramExerciseAdderView: View {
     
     // Model context instantioation
@@ -43,6 +45,12 @@ struct ProgramExerciseAdderView: View {
                                 Button {
                                     if is_exercise_in_program_day(day: day, exercise: exercise) == false {
                                         day.exercises.append(exercise)
+                                        update_ledger(day: day, exercise: exercise)
+                                    
+                                        for i in 0...(exercise.ledger.count - 1) {
+                                            print(exercise.ledger[i].index)
+                                        }
+                                        
                                     } else {
                                         day.exercises.remove(at: find_index_of_exercise(day: day, exercise: exercise))
                                     }
