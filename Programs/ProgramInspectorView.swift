@@ -19,6 +19,7 @@ struct ProgramInspectorView: View {
     // State variables
     @State var focus: UUID = UUID()
     @State var change_day_name: Bool = false
+    @State var add_new_day: Bool = false
     @State var new_day_name: String = ""
     
     // Computed properties
@@ -128,6 +129,42 @@ struct ProgramInspectorView: View {
                 }
                 .presentationDetents([.medium])
             }
+            .sheet(isPresented: $add_new_day) {
+                NavigationStack {
+                    Form {
+                        Section(footer: Text("Name this new day.")) {
+                            TextField("Name", text: $new_day_name)
+                        }
+                    }
+                    .navigationTitle("New Day")
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                add_new_day.toggle()
+                            } label: {
+                               Text("Cancel")
+                                    .foregroundStyle(.red)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                        
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                if new_day_name != "" {
+                                    program.program_days.append(ProgramDay(name: new_day_name, index: program.program_days.count))
+                                }
+                                add_new_day.toggle()
+                                new_day_name = ""
+                            } label: {
+                               Text("Add")
+                                    .foregroundStyle(.blue)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                }
+                .presentationDetents([.medium])
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
@@ -150,6 +187,15 @@ struct ProgramInspectorView: View {
                         } label: {
                             Text("Edit day name")
                             Image(systemName: "pencil")
+                        }
+                        
+                        if program.type == .daily {
+                            Button {
+                                add_new_day.toggle()
+                            } label: {
+                                Text("Add new day")
+                                Image(systemName: "plus")
+                            }
                         }
                     } label: {
                         Image(systemName: "gear")
