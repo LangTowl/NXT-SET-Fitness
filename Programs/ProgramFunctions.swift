@@ -7,6 +7,8 @@
 
 import Foundation
 
+let weekday_names: [String] = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
+
 func verify_active_program(program: Program, program_list: [Program]) {
     for i in 0...(program_list.count - 1) {
         if program_list[i].id != program.id {

@@ -5,6 +5,10 @@
 //  Created by Lang Towl on 9/27/23.
 //
 
+/*
+ UPDATE TOP BAR NAME SO THAT WEEKDAYS SHOW THEIR WEEKDAY NAME AND DAILY PROGRAMS SHOW DAY 1 DAY 2 SO ON 
+ */
+
 import SwiftUI
 
 struct ProgramInspectorView: View {
@@ -14,6 +18,8 @@ struct ProgramInspectorView: View {
     
     // State variables
     @State var focus: UUID = UUID()
+    @State var change_day_name: Bool = false
+    @State var new_day_name: String = ""
     
     // Computed properties
     var ordered_days: [ProgramDay] {
@@ -34,17 +40,20 @@ struct ProgramInspectorView: View {
         NavigationStack {
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach(ordered_days, id: \.self) { day in
+                    ForEach(0...(ordered_days.count - 1), id: \.self) { i in
                         Button {
-                            focus = day.id
+                            focus = ordered_days[i].id
                         } label: {
-                            if focus == day.id {
-                                Text(day.name)
-                                    .foregroundStyle(.blue)
-                                    .bold()
-                            } else {
-                                Text(day.name)
-                            }
+                            Group {
+                                switch program.type {
+                                case .daily:
+                                    Text("Day \(i + 1)")
+                                case .weekly:
+                                    Text(weekday_names[i])
+                                }
+                            } 
+                            .foregroundStyle(focused_day.id == ordered_days[i].id ? .blue : .gray)
+                            .fontWeight(focused_day.id == ordered_days[i].id ? .bold : .regular)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
@@ -87,9 +96,62 @@ struct ProgramInspectorView: View {
                 }
             }
             .navigationTitle(program.name)
+            .sheet(isPresented: $change_day_name) {
+                NavigationStack {
+                    Form {
+                        Section(footer: Text("This will overide the name of \(focused_day.name)")) {
+                            TextField("New name", text: $new_day_name)
+                        }
+                    }
+                    .navigationTitle("Edit day name")
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                change_day_name.toggle()
+                            } label: {
+                                Text("Cancel")
+                                    .foregroundStyle(.red)
+                            }
+                        }
+                        
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                focused_day.name = new_day_name
+                                new_day_name = ""
+                                change_day_name.toggle()
+                            } label: {
+                                Text("Save")
+                                    .foregroundStyle(.blue)
+                            }
+                        }
+                    }
+                }
+                .presentationDetents([.medium])
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink(destination: ProgramSettingsView(program: program)) {
+                    Menu {
+                        NavigationLink(destination: ProgramSettingsView(program: program)) {
+                            HStack {
+                                Text("Program settings")
+                                Image(systemName: "gear")
+                            }
+                        }
+                        
+                        Button {
+                            
+                        } label: {
+                            Text("Change order of exercises")
+                            Image(systemName: "list.bullet")
+                        }
+                        
+                        Button {
+                            change_day_name.toggle()
+                        } label: {
+                            Text("Edit day name")
+                            Image(systemName: "pencil")
+                        }
+                    } label: {
                         Image(systemName: "gear")
                     }
                 }
