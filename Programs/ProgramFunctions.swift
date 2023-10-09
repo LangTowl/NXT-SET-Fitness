@@ -59,6 +59,14 @@ func update_ledger(day: ProgramDay, exercise: Exercise) {
     exercise.ledger.append(LedgerItem(day: day.id, exercise: exercise.id, index: day.exercises.count))
 }
 
+func delete_from_ledger(day: ProgramDay, exercises: Exercise) {
+    for i in 0...(exercises.ledger.count - 1) {
+        if exercises.ledger[i].id == day.id {
+            exercises.ledger.remove(at: i)
+        }
+    }
+}
+
 func find_in_ledger(day: ProgramDay, exercise: Exercise) -> Int {
     for i in 0...(exercise.ledger.count - 1) {
         if exercise.ledger[i].day == day.id {
