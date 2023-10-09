@@ -189,6 +189,11 @@ struct ProgramInspectorView: View {
                             Image(systemName: "pencil")
                         }
                         
+                        NavigationLink(destination: ChangeExerciseOrderView(day: focused_day, buffer: build_buffer(day: ordered_exercises))) {
+                            Text("Change order of exercises")
+                            Image(systemName: "list.clipboard")
+                        }
+                        
                         if program.type == .daily {
                             Button {
                                 add_new_day.toggle()

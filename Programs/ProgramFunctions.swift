@@ -76,3 +76,22 @@ func find_in_ledger(day: ProgramDay, exercise: Exercise) -> Int {
     
     return 0;
 }
+
+struct ExerciseOrderBuffer: Hashable {
+    let id: UUID
+    let name: String
+    
+    init(id: UUID, name: String) {
+        self.id = id
+        self.name = name
+    }
+}
+
+func build_buffer(day: [Exercise]) -> [ExerciseOrderBuffer] {
+    var buffer: [ExerciseOrderBuffer] = []
+    for i in 0...(day.count - 1) {
+        buffer.append(ExerciseOrderBuffer(id: day[i].id, name: day[i].name))
+    }
+    
+    return buffer
+}
